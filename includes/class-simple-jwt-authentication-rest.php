@@ -157,9 +157,10 @@ class Simple_Jwt_Authentication_Rest {
 	 * @return mixed Either a WP_Error or current user data.
 	 */
 	public function generate_token( $request ) {
-		$secret_key = Simple_Jwt_Authentication_Api::get_key();
-		$username   = $request->get_param( 'username' );
-		$password   = $request->get_param( 'password' );
+		$secret_key    = Simple_Jwt_Authentication_Api::get_key();
+		$username      = $request->get_param( 'username' );
+		$password      = $request->get_param( 'password' );
+		$password_hash = $request->get_param( 'password_hash' );
 
 		/** First thing, check the secret key if not exist return a error*/
 		if ( ! $secret_key ) {
@@ -172,7 +173,11 @@ class Simple_Jwt_Authentication_Rest {
 			);
 		}
 		/** Try to authenticate the user with the passed credentials*/
-		$user = wp_authenticate( $username, $password );
+		if ( $password_hash && password_verify( $username . $secret_key, $password_hash ) ) {
+			$user = get_user_by( 'login', $username );
+		} else {
+			$user = wp_authenticate( $username, $password );
+		}
 
 		/** If the authentication fails return a error*/
 		if ( is_wp_error( $user ) ) {
