@@ -216,7 +216,7 @@ class Simple_Jwt_Authentication_Rest {
 			'issued_at' => $issued_at,
 			'expires'   => $expire,
 			'ip'        => $user_ip,
-			'ua'        => $_SERVER['HTTP_USER_AGENT'],
+			'ua'        => ! empty( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : __( 'Unknown', 'simple-jwt-authentication' ),
 			'last_used' => time(),
 		);
 		update_user_meta( $user->data->ID, 'jwt_data', apply_filters( 'simple_jwt_auth_save_user_data', $jwt_data ) );
@@ -382,7 +382,7 @@ class Simple_Jwt_Authentication_Rest {
 				if ( $token_data['uuid'] === $token->uuid ) {
 					$user_ip                       = ! empty( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : __( 'Unknown', 'simple-jwt-authentication' );
 					$jwt_data[ $key ]['last_used'] = time();
-					$jwt_data[ $key ]['ua']        = $_SERVER['HTTP_USER_AGENT'];
+					$jwt_data[ $key ]['ua']        = ! empty( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : __( 'Unknown', 'simple-jwt-authentication' );
 					$jwt_data[ $key ]['ip']        = $user_ip;
 					$valid_token                   = true;
 					break;
@@ -481,7 +481,7 @@ class Simple_Jwt_Authentication_Rest {
 			'issued_at' => $issued_at,
 			'expires'   => $expire,
 			'ip'        => $user_ip,
-			'ua'        => $_SERVER['HTTP_USER_AGENT'],
+			'ua'        => ! empty( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : __( 'Unknown', 'simple-jwt-authentication' ),
 			'last_used' => time(),
 		);
 		update_user_meta( $user->data->ID, 'jwt_data', apply_filters( 'simple_jwt_auth_save_user_data', $jwt_data ) );
