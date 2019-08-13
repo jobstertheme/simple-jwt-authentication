@@ -636,8 +636,8 @@ class Simple_Jwt_Authentication_Rest {
 		// translators: %s is the sites name (blogname)
 		$title = sprintf( __( '[%s] Password Reset' ), $blogname );
 
-		$title   = apply_filters( 'retrieve_password_title', $title );
-		$message = apply_filters( 'retrieve_password_message', $message, $key );
+		$title   = apply_filters( 'retrieve_password_title', $title, $user_login, $user_data );
+		$message = apply_filters( 'retrieve_password_message', $message, $key, $user_login, $user_data );
 
 		if ( $message && ! wp_mail( $user_email, $title, $message ) ) {
 			wp_die( __( 'The e-mail could not be sent.' ) . "<br />\n" . __( 'Possible reason: your host may have disabled the mail() function...' ) ); // phpcs:ignore
