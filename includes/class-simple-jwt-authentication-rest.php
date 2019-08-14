@@ -415,7 +415,6 @@ class Simple_Jwt_Authentication_Rest {
 				'data' => array(
 					'status' => 200,
 				),
-				'user_id' => (int) $token->data->user->id,
 			);
 		} catch ( Exception $e ) {
 			// Something is wrong trying to decode the token, send back the error.
