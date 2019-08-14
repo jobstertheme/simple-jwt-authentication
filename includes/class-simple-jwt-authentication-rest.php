@@ -410,12 +410,16 @@ class Simple_Jwt_Authentication_Rest {
 				return $token;
 			}
 			// If the output is true return an answer to the request to show it.
-			return array(
+			$data = array(
 				'code' => 'jwt_auth_valid_token',
 				'data' => array(
 					'status' => 200,
 				),
 			);
+
+			// Let the user modify the data before send it back.
+			return apply_filters( 'jwt_auth_token_validate_before_dispatch', $data, $token );
+
 		} catch ( Exception $e ) {
 			// Something is wrong trying to decode the token, send back the error.
 			return new WP_Error(
