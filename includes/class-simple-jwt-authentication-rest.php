@@ -534,6 +534,7 @@ class Simple_Jwt_Authentication_Rest {
 		if ( $tokens ) {
 			foreach ( $tokens as $key => $token_data ) {
 				if ( $token_data['uuid'] === $token_uuid ) {
+					do_action( 'jwt_auth_token_revoke', $token->data->user->id, $token_data );
 					unset( $tokens[ $key ] );
 					update_user_meta( $token->data->user->id, 'jwt_data', $tokens );
 					return array(

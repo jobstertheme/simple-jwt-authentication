@@ -110,6 +110,7 @@ class Simple_Jwt_Authentication_Profile {
 			if ( $tokens ) {
 				foreach ( $tokens as $key => $token ) {
 					if ( $token['uuid'] === $_GET['revoke_token'] ) {
+						do_action( 'jwt_auth_token_revoke', $this->user->ID, $token );
 						unset( $tokens[ $key ] );
 						update_user_meta( $this->user->ID, 'jwt_data', $tokens );
 						break;
@@ -142,6 +143,7 @@ class Simple_Jwt_Authentication_Profile {
 		}
 
 		if ( $this->user && current_user_can( 'edit_users' ) && ! empty( $_GET['revoke_all_tokens'] ) ) {
+			do_action( 'jwt_auth_token_revoke', $this->user->ID, false );
 			delete_user_meta( $this->user->ID, 'jwt_data' );
 			$current_url = get_home_url() . $_SERVER['REQUEST_URI'];
 
@@ -176,6 +178,7 @@ class Simple_Jwt_Authentication_Profile {
 			if ( $tokens ) {
 				foreach ( $tokens as $key => $token ) {
 					if ( $token['expires'] < time() ) {
+						do_action( 'jwt_auth_token_revoke', $this->user->ID, $token );
 						unset( $tokens[ $key ] );
 					}
 				}
